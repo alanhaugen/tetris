@@ -1,5 +1,6 @@
 #include <core/application.h>
 #include <core/x-platform/scene.h>
+#include <core/components/camera.h>
 
 int score;
 
@@ -53,6 +54,7 @@ void Tetris::Init()
     paused = false;
 
     mainMenuScene = new MainMenu();
+    components.Add(new Camera());
 }
 
 void Tetris::Update()
