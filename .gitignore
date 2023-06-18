@@ -1,0 +1,92 @@
+intermediate
+
+# Library folder and link
+lib/
+lib
+
+# Tools link
+tools
+
+# Standarddata folder and link
+standarddata/
+standarddata
+
+# Build results
+build/
+build*
+bin/
+lib/debug/mingw32/x86/*
+lib/release/mingw32/x86/*
+lib/debug/darwin/x86_64/*
+lib/release/darwin/x86_64/*
+
+# Don't include generated documentation
+docs/html
+docs/latex
+docs/doxygen_sqlite3.db
+
+# QtCreator
+*.autosave
+*.user*
+
+# Vim
+*.swp
+
+# Cafe stuff
+app.xml
+cos.xml
+*.rpx
+*.rpl
+*.elf
+#*.a
+*.o
+*.d
+*.d.bak
+*.dle
+*.dbo
+*.ddf
+*.dla
+*.dlf
+*.dnm
+*.dsf
+*.map
+*.rcf
+*.dep
+*.ti
+
+# =========================
+# Windows generated
+# =========================
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# =========================
+# Mac generated
+# =========================
+.DS_Store
+lib/debug/darwin/x86_64/libcore.a
+lib/debug/darwin/x86_64/libgles2renderer.a
+lib/debug/darwin/x86_64/libnullaudio.a
+lib/debug/darwin/x86_64/libnullfilesystem.a
+lib/debug/darwin/x86_64/libnullphysics.a
+lib/debug/darwin/x86_64/libnullrenderer.a
+lib/debug/darwin/x86_64/libnullscript.a
+lib/debug/darwin/x86_64/libsoftwarerenderer.a
+lib/debug/darwin/x86_64/libstdfilesystem.a
+lib/release/darwin/x86_64/libcore.a
+lib/release/darwin/x86_64/libgles2renderer.a
+lib/release/darwin/x86_64/libnullaudio.a
+lib/release/darwin/x86_64/libnullfilesystem.a
+lib/release/darwin/x86_64/libnullphysics.a
+lib/release/darwin/x86_64/libnullrenderer.a
+lib/release/darwin/x86_64/libnullscript.a
+lib/release/darwin/x86_64/libsoftwarerenderer.a
+lib/release/darwin/x86_64/libstdfilesystem.a
