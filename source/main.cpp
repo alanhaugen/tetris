@@ -2,6 +2,7 @@
 #include <core/x-platform/scene.h>
 #include <core/components/camera.h>
 #include <core/components/text.h>
+#include <core/components/cube.h>
 
 int highscore = 0;
 
@@ -45,7 +46,7 @@ void MainMenu::Init()
     components.Add(quit);
     components.Add(selector);
 
-    isStartSelected = false;
+    isStartSelected = true;
 }
 
 void MainMenu::Update()
@@ -62,7 +63,11 @@ void MainMenu::Update()
     }
     if (input.Pressed(input.Key.ENTER))
     {
-        if (isStartSelected == false)
+        if (isStartSelected == true)
+        {
+            Application::NextScene();
+        }
+        else if (isStartSelected == false)
         {
             Application::Quit();
         }
@@ -123,6 +128,7 @@ void Tetris::Init()
     paused = false;
 
     components.Add(new Camera());
+    components.Add(new Cube(0, 0, -5));
 }
 
 void Tetris::Update()
