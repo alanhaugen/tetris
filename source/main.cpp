@@ -95,9 +95,9 @@ GameOver::GameOver()
 void GameOver::Init()
 {
     components.Add(new Camera());
-    components.Add(new Text("GAME OVER", 200, 500));
-    components.Add(new Text("HIGHSCORE: " + String(highscore), 200, 600));
-    components.Add(new Text("PRESS SPACE TO CONTINUE", 200, 700));
+    components.Add(new Text("GAME OVER", 200, 300));
+    components.Add(new Text("HIGHSCORE: " + String(highscore), 200, 400));
+    components.Add(new Text("PRESS SPACE TO CONTINUE", 200, 500));
 }
 
 void GameOver::Update()
@@ -153,6 +153,11 @@ void Tetris::Update()
     if (input.Held(input.Key.RIGHT))
     {
         activePiece->matrix.Translate(glm::vec3(0.1f, 0.0f, 0.0f));
+    }
+
+    if (activePiece->matrix.position.y < -3.0f)
+    {
+        Application::NextScene();
     }
 }
 
