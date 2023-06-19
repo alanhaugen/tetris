@@ -94,10 +94,18 @@ GameOver::GameOver()
 
 void GameOver::Init()
 {
+    components.Add(new Camera());
+    components.Add(new Text("GAME OVER", 200, 500));
+    components.Add(new Text("HIGHSCORE: " + String(highscore), 200, 600));
+    components.Add(new Text("PRESS SPACE TO CONTINUE", 200, 700));
 }
 
 void GameOver::Update()
 {
+    if (input.Pressed(input.Key.SPACE))
+    {
+        Application::LoadScene(0);
+    }
 }
 
 void GameOver::UpdateAfterPhysics()
@@ -109,6 +117,7 @@ class Tetris : public IScene
 private:
     int score;
     bool paused;
+    Cube *activePiece;
 
 public:
     Tetris();
@@ -127,12 +136,24 @@ void Tetris::Init()
     score = 0;
     paused = false;
 
+    activePiece = new Cube(0, 0, -5);
+
     components.Add(new Camera());
-    components.Add(new Cube(0, 0, -5));
+    components.Add(activePiece);
 }
 
 void Tetris::Update()
 {
+    activePiece->matrix.Translate(glm::vec3(0.0f, -0.01f, 0.0f));
+
+    if (input.Held(input.Key.LEFT))
+    {
+        activePiece->matrix.Translate(glm::vec3(-0.1f, 0.0f, 0.0f));
+    }
+    if (input.Held(input.Key.RIGHT))
+    {
+        activePiece->matrix.Translate(glm::vec3(0.1f, 0.0f, 0.0f));
+    }
 }
 
 void Tetris::UpdateAfterPhysics()
