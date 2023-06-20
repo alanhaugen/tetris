@@ -136,59 +136,72 @@ public:
 Block::Block(int type)
 {
     canRotate = true;
-
     if (type == I)
     {
-        components.Add(new Cube(0,0,0));
-        components.Add(new Cube(0,1*2,0));
-        components.Add(new Cube(0,2*2,0));
-        components.Add(new Cube(0,3*2,0));
+        Uniform("colour", static_cast<glm::vec4>(glm::vec4(1.0f, 0.0f, 1.0f, 1.0f)));
+
+        Add(new Cube(0,0,0));
+        Add(new Cube(0,1*2,0));
+        Add(new Cube(0,2*2,0));
+        Add(new Cube(0,3*2,0));
 
         collisionBox = physics->CreateHitBox(glm::vec3(1.0f), &matrix); // todo: fix
     }
     else if (type == O)
     {
-        components.Add(new Cube(0,0,0));
-        components.Add(new Cube(0,1*2,0));
-        components.Add(new Cube(1*2,1*2,0));
-        components.Add(new Cube(1*2,0,0));
+        Uniform("colour", static_cast<glm::vec4>(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f)));
+
+        Add(new Cube(0,0,0));
+        Add(new Cube(0,1*2,0));
+        Add(new Cube(1*2,1*2,0));
+        Add(new Cube(1*2,0,0));
 
         canRotate = false;
     }
     else if (type == T)
     {
-        components.Add(new Cube(0,0,0));
-        components.Add(new Cube(1*2,0,0));
-        components.Add(new Cube(-1*2,0,0));
-        components.Add(new Cube(0,1*2,0));
+        Uniform("colour", static_cast<glm::vec4>(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f)));
+
+        Add(new Cube(0,0,0));
+        Add(new Cube(1*2,0,0));
+        Add(new Cube(-1*2,0,0));
+        Add(new Cube(0,1*2,0));
     }
     else if (type == S)
     {
-        components.Add(new Cube(0,0,0));
-        components.Add(new Cube(1*2,0,0));
-        components.Add(new Cube(0,1*2,0));
-        components.Add(new Cube(-1*2,1*2,0));
+        Uniform("colour", static_cast<glm::vec4>(glm::vec4(1.0f, 0.0f, 1.0f, 1.0f)));
+
+        Add(new Cube(0,0,0));
+        Add(new Cube(1*2,0,0));
+        Add(new Cube(0,1*2,0));
+        Add(new Cube(-1*2,1*2,0));
     }
     else if (type == Z)
     {
-        components.Add(new Cube(0,0,0));
-        components.Add(new Cube(-1*2,0,0));
-        components.Add(new Cube(0,1*2,0));
-        components.Add(new Cube(1*2,1*2,0));
+        Uniform("colour", static_cast<glm::vec4>(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+
+        Add(new Cube(0,0,0));
+        Add(new Cube(-1*2,0,0));
+        Add(new Cube(0,1*2,0));
+        Add(new Cube(1*2,1*2,0));
     }
     else if (type == J)
     {
-        components.Add(new Cube(0,0,0));
-        components.Add(new Cube(0,1*2,0));
-        components.Add(new Cube(0,2*2,0));
-        components.Add(new Cube(-1*2,2*2,0));
+        Uniform("colour", static_cast<glm::vec4>(glm::vec4(.0f, 1.0f, 1.0f, 1.0f)));
+
+        Add(new Cube(0,0,0));
+        Add(new Cube(0,1*2,0));
+        Add(new Cube(0,2*2,0));
+        Add(new Cube(-1*2,2*2,0));
     }
     else if (type == L)
     {
-        components.Add(new Cube(0,0,0));
-        components.Add(new Cube(0,1*2,0));
-        components.Add(new Cube(0,2*2,0));
-        components.Add(new Cube(1*2,2*2,0));
+        Uniform("colour", static_cast<glm::vec4>(glm::vec4(.0f, 1.0f, .0f, 1.0f)));
+
+        Add(new Cube(0,0,0));
+        Add(new Cube(0,1*2,0));
+        Add(new Cube(0,2*2,0));
+        Add(new Cube(1*2,2*2,0));
     }
 
     matrix.Translate(glm::vec3(0, 10, -25));
@@ -232,7 +245,6 @@ void Tetris::Init()
 
 void Tetris::Update()
 {
-
     if (timer->TimeSinceStarted() > TICK_TIME / speed || input.Pressed(input.Key.DOWN))
     {
         timer->Reset();
@@ -254,9 +266,13 @@ void Tetris::Update()
 
     if (activePiece->matrix.position.y < -10.0f)
     {
+        if (activePiece->matrix.position.x < -10.0f)
+        {
+            Application::NextScene();
+        }
+
         activePiece = new Block(random.RandomRange(0, NUMBER_OF_TETROMINOS));
         components.Add(activePiece);
-        //Application::NextScene();
     }
 }
 
