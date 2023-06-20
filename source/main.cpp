@@ -112,24 +112,90 @@ void GameOver::UpdateAfterPhysics()
 {
 }
 
-class Block
+// In tetris the shapes consist of four cubes
+enum TETREMINOS
 {
-private:
-    Cube *activePiece;
-public:
-    Block();
+    I,
+    O,
+    T,
+    S,
+    Z,
+    J,
+    L
 };
 
-Block::Block()
+const int NUMBER_OF_TETREMINOS = 7;
+
+class Block : public Actor
 {
+private:
+
+public:
+    Block(int type = I);
+};
+
+Block::Block(int type)
+{
+    if (type == I)
+    {
+        components.Add(new Cube(0,0,0));
+        components.Add(new Cube(0,1,0));
+        components.Add(new Cube(0,2,0));
+        components.Add(new Cube(0,3,0));
+    }
+    else if (type == O)
+    {
+        components.Add(new Cube(0,0,0));
+        components.Add(new Cube(0,1,0));
+        components.Add(new Cube(1,1,0));
+        components.Add(new Cube(1,0,0));
+    }
+    else if (type == T)
+    {
+        components.Add(new Cube(0,0,0));
+        components.Add(new Cube(1,0,0));
+        components.Add(new Cube(-1,0,0));
+        components.Add(new Cube(0,2,0));
+    }
+    else if (type == S)
+    {
+        components.Add(new Cube(0,0,0));
+        components.Add(new Cube(1,0,0));
+        components.Add(new Cube(-1,0,0));
+        components.Add(new Cube(0,1,0));
+    }
+    else if (type == Z)
+    {
+        components.Add(new Cube(0,0,0));
+        components.Add(new Cube(1,0,0));
+        components.Add(new Cube(-1,0,0));
+        components.Add(new Cube(0,1,0));
+    }
+    else if (type == J)
+    {
+        components.Add(new Cube(0,0,0));
+        components.Add(new Cube(1,0,0));
+        components.Add(new Cube(-1,0,0));
+        components.Add(new Cube(0,1,0));
+    }
+    else if (type == L)
+    {
+        components.Add(new Cube(0,0,0));
+        components.Add(new Cube(1,0,0));
+        components.Add(new Cube(-1,0,0));
+        components.Add(new Cube(0,1,0));
+    }
+
+    matrix.Translate(glm::vec3(0, 0, -15));
 }
 
 class Tetris : public IScene
 {
 private:
     int score;
+    int speed;
     bool paused;
-    Cube *activePiece;
+    Block *activePiece;
 
 public:
     Tetris();
@@ -146,9 +212,10 @@ Tetris::Tetris()
 void Tetris::Init()
 {
     score = 0;
+    speed = 5;
     paused = false;
 
-    activePiece = new Cube(0, 0, -5);
+    activePiece = new Block();
 
     components.Add(new Camera());
     components.Add(activePiece);
@@ -156,20 +223,22 @@ void Tetris::Init()
 
 void Tetris::Update()
 {
-    activePiece->matrix.Translate(glm::vec3(0.0f, -0.01f, 0.0f));
+    activePiece->matrix.Translate(glm::vec3(0.0f, -0.01f * speed, 0.0f));
 
     if (input.Held(input.Key.LEFT))
     {
-        activePiece->matrix.Translate(glm::vec3(-0.1f, 0.0f, 0.0f));
+        activePiece->matrix.Translate(glm::vec3(-0.1f * speed, 0.0f, 0.0f));
     }
     if (input.Held(input.Key.RIGHT))
     {
-        activePiece->matrix.Translate(glm::vec3(0.1f, 0.0f, 0.0f));
+        activePiece->matrix.Translate(glm::vec3(0.1f * speed, 0.0f, 0.0f));
     }
 
-    if (activePiece->matrix.position.y < -3.0f)
+    if (activePiece->matrix.position.y < -10.0f)
     {
-        Application::NextScene();
+        activePiece = new Block(random.RandomRange(0, NUMBER_OF_TETREMINOS));
+        components.Add(activePiece);
+        //Application::NextScene();
     }
 }
 
