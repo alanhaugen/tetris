@@ -139,55 +139,57 @@ Block::Block(int type)
     if (type == I)
     {
         components.Add(new Cube(0,0,0));
-        components.Add(new Cube(0,1,0));
-        components.Add(new Cube(0,2,0));
-        components.Add(new Cube(0,3,0));
+        components.Add(new Cube(0,1*2,0));
+        components.Add(new Cube(0,2*2,0));
+        components.Add(new Cube(0,3*2,0));
     }
     else if (type == O)
     {
         components.Add(new Cube(0,0,0));
-        components.Add(new Cube(0,1,0));
-        components.Add(new Cube(1,1,0));
-        components.Add(new Cube(1,0,0));
+        components.Add(new Cube(0,1*2,0));
+        components.Add(new Cube(1*2,1*2,0));
+        components.Add(new Cube(1*2,0,0));
     }
     else if (type == T)
     {
         components.Add(new Cube(0,0,0));
-        components.Add(new Cube(1,0,0));
-        components.Add(new Cube(-1,0,0));
-        components.Add(new Cube(0,2,0));
+        components.Add(new Cube(1*2,0,0));
+        components.Add(new Cube(-1*2,0,0));
+        components.Add(new Cube(0,1*2,0));
     }
     else if (type == S)
     {
         components.Add(new Cube(0,0,0));
-        components.Add(new Cube(1,0,0));
-        components.Add(new Cube(-1,0,0));
-        components.Add(new Cube(0,1,0));
+        components.Add(new Cube(1*2,0,0));
+        components.Add(new Cube(0,1*2,0));
+        components.Add(new Cube(-1*2,1*2,0));
     }
     else if (type == Z)
     {
         components.Add(new Cube(0,0,0));
-        components.Add(new Cube(1,0,0));
-        components.Add(new Cube(-1,0,0));
-        components.Add(new Cube(0,1,0));
+        components.Add(new Cube(-1*2,0,0));
+        components.Add(new Cube(0,1*2,0));
+        components.Add(new Cube(1*2,1*2,0));
     }
     else if (type == J)
     {
         components.Add(new Cube(0,0,0));
-        components.Add(new Cube(1,0,0));
-        components.Add(new Cube(-1,0,0));
-        components.Add(new Cube(0,1,0));
+        components.Add(new Cube(0,1*2,0));
+        components.Add(new Cube(0,2*2,0));
+        components.Add(new Cube(-1*2,2*2,0));
     }
     else if (type == L)
     {
         components.Add(new Cube(0,0,0));
-        components.Add(new Cube(1,0,0));
-        components.Add(new Cube(-1,0,0));
-        components.Add(new Cube(0,1,0));
+        components.Add(new Cube(0,1*2,0));
+        components.Add(new Cube(0,2*2,0));
+        components.Add(new Cube(1*2,2*2,0));
     }
 
-    matrix.Translate(glm::vec3(0, 0, -15));
+    matrix.Translate(glm::vec3(0, 10, -25));
 }
+
+const float TICK_TIME = 500.0f;
 
 class Tetris : public IScene
 {
@@ -195,6 +197,7 @@ private:
     int score;
     int speed;
     bool paused;
+    ITime *timer;
     Block *activePiece;
 
 public:
@@ -212,8 +215,9 @@ Tetris::Tetris()
 void Tetris::Init()
 {
     score = 0;
-    speed = 5;
+    speed = 1;
     paused = false;
+    timer = Application::GetTime();
 
     activePiece = new Block();
 
@@ -223,15 +227,20 @@ void Tetris::Init()
 
 void Tetris::Update()
 {
-    activePiece->matrix.Translate(glm::vec3(0.0f, -0.01f * speed, 0.0f));
 
-    if (input.Held(input.Key.LEFT))
+    if (timer->TimeSinceStarted() > TICK_TIME / speed || input.Pressed(input.Key.DOWN))
     {
-        activePiece->matrix.Translate(glm::vec3(-0.1f * speed, 0.0f, 0.0f));
+        timer->Reset();
+        activePiece->matrix.Translate(glm::vec3(0.0f, -2.0f, 0.0f));
     }
-    if (input.Held(input.Key.RIGHT))
+
+    if (input.Pressed(input.Key.LEFT))
     {
-        activePiece->matrix.Translate(glm::vec3(0.1f * speed, 0.0f, 0.0f));
+        activePiece->matrix.Translate(glm::vec3(-2.0f, 0.0f, 0.0f));
+    }
+    if (input.Pressed(input.Key.RIGHT))
+    {
+        activePiece->matrix.Translate(glm::vec3(2.0f, 0.0f, 0.0f));
     }
 
     if (activePiece->matrix.position.y < -10.0f)
