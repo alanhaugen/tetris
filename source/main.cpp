@@ -5,6 +5,7 @@
 #include <core/components/cube.h>
 
 int highscore = 0;
+const int NUMBER_OF_TETROMINOS = 7;
 
 class MainMenu : public IScene
 {
@@ -112,36 +113,38 @@ void GameOver::UpdateAfterPhysics()
 {
 }
 
-// In tetris the shapes consist of four cubes
-enum TETREMINOS
-{
-    I,
-    O,
-    T,
-    S,
-    Z,
-    J,
-    L
-};
-
-const int NUMBER_OF_TETREMINOS = 7;
-
 class Block : public Actor
 {
 private:
+    // In tetris the shapes (tetrominos) consist of four cubes
+    enum TETROMINOS
+    {
+        I,
+        O,
+        T,
+        S,
+        Z,
+        J,
+        L
+    };
 
 public:
     Block(int type = I);
+    bool canRotate;
 };
 
 Block::Block(int type)
 {
+    canRotate = true;
+
     if (type == I)
     {
         components.Add(new Cube(0,0,0));
         components.Add(new Cube(0,1*2,0));
         components.Add(new Cube(0,2*2,0));
         components.Add(new Cube(0,3*2,0));
+
+        collisionBox = physics->CreateHitBox(glm::vec3(1.0f), &matrix); // todo: fix
     }
     else if (type == O)
     {
@@ -149,6 +152,8 @@ Block::Block(int type)
         components.Add(new Cube(0,1*2,0));
         components.Add(new Cube(1*2,1*2,0));
         components.Add(new Cube(1*2,0,0));
+
+        canRotate = false;
     }
     else if (type == T)
     {
@@ -242,10 +247,14 @@ void Tetris::Update()
     {
         activePiece->matrix.Translate(glm::vec3(2.0f, 0.0f, 0.0f));
     }
+    if (input.Pressed(input.Key.UP) && activePiece->canRotate)
+    {
+        activePiece->matrix.Rotate(3.14159/2, glm::vec3(0.0f, 0.0f, 1.0f));
+    }
 
     if (activePiece->matrix.position.y < -10.0f)
     {
-        activePiece = new Block(random.RandomRange(0, NUMBER_OF_TETREMINOS));
+        activePiece = new Block(random.RandomRange(0, NUMBER_OF_TETROMINOS));
         components.Add(activePiece);
         //Application::NextScene();
     }
