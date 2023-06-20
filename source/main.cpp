@@ -112,6 +112,18 @@ void GameOver::UpdateAfterPhysics()
 {
 }
 
+class Block
+{
+private:
+    Cube *activePiece;
+public:
+    Block();
+};
+
+Block::Block()
+{
+}
+
 class Tetris : public IScene
 {
 private:
