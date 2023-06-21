@@ -136,6 +136,7 @@ public:
 Block::Block(int type)
 {
     canRotate = true;
+
     if (type == I)
     {
         Uniform("colour", static_cast<glm::vec4>(glm::vec4(1.0f, 0.0f, 1.0f, 1.0f)));
@@ -144,8 +145,6 @@ Block::Block(int type)
         Add(new Cube(0,1*2,0));
         Add(new Cube(0,2*2,0));
         Add(new Cube(0,3*2,0));
-
-        collisionBox = physics->CreateHitBox(glm::vec3(1.0f), &matrix); // todo: fix
     }
     else if (type == O)
     {
@@ -207,8 +206,6 @@ Block::Block(int type)
     matrix.Translate(glm::vec3(0, 10, -25));
 }
 
-const float TICK_TIME = 500.0f;
-
 class Tetris : public IScene
 {
 private:
@@ -217,6 +214,7 @@ private:
     bool paused;
     ITime *timer;
     Block *activePiece;
+    float gameTickTime;
 
 public:
     Tetris();
@@ -236,6 +234,7 @@ void Tetris::Init()
     speed = 1;
     paused = false;
     timer = Application::GetTime();
+    gameTickTime = 500.0f;
 
     activePiece = new Block();
 
@@ -245,7 +244,7 @@ void Tetris::Init()
 
 void Tetris::Update()
 {
-    if (timer->TimeSinceStarted() > TICK_TIME / speed || input.Pressed(input.Key.DOWN))
+    if (timer->TimeSinceStarted() > gameTickTime / speed || input.Pressed(input.Key.DOWN))
     {
         timer->Reset();
         activePiece->matrix.Translate(glm::vec3(0.0f, -2.0f, 0.0f));
@@ -278,6 +277,11 @@ void Tetris::Update()
 
 void Tetris::UpdateAfterPhysics()
 {
+    /*if (physics->Collide("ActiveBrick"))
+    {
+        activePiece // move back
+        // make new brick and or game over... 
+    }*/
 }
 
 int main(int argc, char **argv)
