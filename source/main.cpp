@@ -277,7 +277,7 @@ void Tetris::Update()
 
 void Tetris::UpdateAfterPhysics()
 {
-    /*if (physics->Collide("ActiveBrick"))
+    /*if (physics->Collide())
     {
         activePiece // move back
         // make new brick and or game over... 
