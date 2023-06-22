@@ -277,11 +277,12 @@ void Tetris::Update()
 
 void Tetris::UpdateAfterPhysics()
 {
-    /*if (physics->Collide())
+    if (physics->Collide(NULL, "cube"))
     {
-        activePiece // move back
+        Log("collision");
+        //activePiece // move back
         // make new brick and or game over... 
-    }*/
+    }
 }
 
 int main(int argc, char **argv)
