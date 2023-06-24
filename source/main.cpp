@@ -131,6 +131,8 @@ private:
 public:
     Block(int type = I);
     bool canRotate;
+    glm::vec3 direction;
+    glm::vec3 startPos;
 };
 
 Block::Block(int type)
@@ -204,6 +206,7 @@ Block::Block(int type)
     }
 
     matrix.Translate(glm::vec3(0, 10, -25));
+    startPos = matrix.position;
 }
 
 class Tetris : public IScene
@@ -244,19 +247,24 @@ void Tetris::Init()
 
 void Tetris::Update()
 {
+    activePiece->direction = glm::vec3();
+
     if (timer->TimeSinceStarted() > gameTickTime / speed || input.Pressed(input.Key.DOWN))
     {
         timer->Reset();
         activePiece->matrix.Translate(glm::vec3(0.0f, -2.0f, 0.0f));
+        activePiece->direction.y = -2.0f;
     }
 
     if (input.Pressed(input.Key.LEFT))
     {
         activePiece->matrix.Translate(glm::vec3(-2.0f, 0.0f, 0.0f));
+        activePiece->direction.x = -2.0f;
     }
     if (input.Pressed(input.Key.RIGHT))
     {
         activePiece->matrix.Translate(glm::vec3(2.0f, 0.0f, 0.0f));
+        activePiece->direction.x = 2.0f;
     }
     if (input.Pressed(input.Key.UP) && activePiece->canRotate)
     {
@@ -265,11 +273,6 @@ void Tetris::Update()
 
     if (activePiece->matrix.position.y < -10.0f)
     {
-        if (activePiece->matrix.position.x < -10.0f)
-        {
-            Application::NextScene();
-        }
-
         activePiece = new Block(random.RandomRange(0, NUMBER_OF_TETROMINOS));
         components.Add(activePiece);
     }
@@ -279,9 +282,18 @@ void Tetris::UpdateAfterPhysics()
 {
     if (physics->Collide(NULL, "cube"))
     {
-        Log("collision");
-        //activePiece // move back
-        // make new brick and or game over... 
+        if (activePiece->matrix.position.y == activePiece->startPos.y)
+        {
+            Application::NextScene();
+        }
+
+        activePiece->matrix.Translate(-activePiece->direction);
+
+        if (activePiece->direction.y < 0.0f)
+        {
+            activePiece = new Block(random.RandomRange(0, NUMBER_OF_TETROMINOS));
+            components.Add(activePiece);
+        }
     }
 }
 
