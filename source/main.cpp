@@ -205,7 +205,7 @@ Block::Block(int type)
         Add(new Cube(1*2,2*2,0));
     }
 
-    matrix.Translate(glm::vec3(0, 10, -25));
+    matrix.Translate(glm::vec3(0, 15, -45));
     startPos = matrix.position;
 }
 
@@ -250,19 +250,19 @@ void Tetris::Init()
     // bottom (10 block)
     for (i = 0; i <= 10; i++)
     {
-        components.Add(new Cube(i*2  - 10,-25 + 10,-25));
+        components.Add(new Cube(i*2  - 10,-35 + 10,-45));
     }
 
     // side left (22 blocks)
     for (i = 0; i < 22; i++)
     {
-        components.Add(new Cube( -12,-25 + 10 + i*2,-25)); 
+        components.Add(new Cube( -12,-35 + 10 + i*2,-45)); 
     }
 
     // side right (22 blocks)
     for (i = 0; i < 22; i++)
     {
-        components.Add(new Cube(10*2-8,-25 + 10 + i*2,-25)); 
+        components.Add(new Cube(10*2-8,-35 + 10 + i*2,-45)); 
     }
 }
 
