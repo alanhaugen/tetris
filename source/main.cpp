@@ -243,6 +243,27 @@ void Tetris::Init()
 
     components.Add(new Camera());
     components.Add(activePiece);
+
+    //// Grid around board
+    int i;
+
+    // bottom (10 block)
+    for (i = 0; i <= 10; i++)
+    {
+        components.Add(new Cube(i*2  - 10,-25 + 10,-25));
+    }
+
+    // side left (22 blocks)
+    for (i = 0; i < 22; i++)
+    {
+        components.Add(new Cube( -12,-25 + 10 + i*2,-25)); 
+    }
+
+    // side right (22 blocks)
+    for (i = 0; i < 22; i++)
+    {
+        components.Add(new Cube(10*2-8,-25 + 10 + i*2,-25)); 
+    }
 }
 
 void Tetris::Update()
@@ -269,12 +290,6 @@ void Tetris::Update()
     if (input.Pressed(input.Key.UP) && activePiece->canRotate)
     {
         activePiece->matrix.Rotate(3.14159/2, glm::vec3(0.0f, 0.0f, 1.0f));
-    }
-
-    if (activePiece->matrix.position.y < -10.0f)
-    {
-        activePiece = new Block(random.RandomRange(0, NUMBER_OF_TETROMINOS));
-        components.Add(activePiece);
     }
 }
 
