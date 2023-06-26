@@ -270,27 +270,29 @@ void Tetris::Update()
 {
     activePiece->direction = glm::vec3();
 
-    if (timer->TimeSinceStarted() > gameTickTime / speed || input.Pressed(input.Key.DOWN))
-    {
-        timer->Reset();
-        activePiece->matrix.Translate(glm::vec3(0.0f, -2.0f, 0.0f));
-        activePiece->direction.y = -2.0f;
-    }
-
     if (input.Pressed(input.Key.LEFT))
     {
-        activePiece->matrix.Translate(glm::vec3(-2.0f, 0.0f, 0.0f));
         activePiece->direction.x = -2.0f;
     }
+
     if (input.Pressed(input.Key.RIGHT))
     {
-        activePiece->matrix.Translate(glm::vec3(2.0f, 0.0f, 0.0f));
         activePiece->direction.x = 2.0f;
     }
+
     if (input.Pressed(input.Key.UP) && activePiece->canRotate)
     {
         activePiece->matrix.Rotate(3.14159/2, glm::vec3(0.0f, 0.0f, 1.0f));
     }
+
+    if (timer->TimeSinceStarted() > gameTickTime / speed || input.Pressed(input.Key.DOWN))
+    {
+        timer->Reset();
+        activePiece->direction.x = 0.0f;
+        activePiece->direction.y = -2.0f;
+    }
+
+    activePiece->matrix.Translate(activePiece->direction);
 }
 
 void Tetris::UpdateAfterPhysics()
@@ -302,12 +304,18 @@ void Tetris::UpdateAfterPhysics()
             Application::NextScene();
         }
 
-        activePiece->matrix.Translate(-activePiece->direction);
-
         if (activePiece->direction.y < 0.0f)
         {
+            activePiece->matrix.Translate(glm::vec3(0.0f, -activePiece->direction.y, 0.0));
+            activePiece->Update();
+
             activePiece = new Block(random.RandomRange(0, NUMBER_OF_TETROMINOS));
             components.Add(activePiece);
+        }
+        else
+        {
+            activePiece->matrix.Translate(glm::vec3(-activePiece->direction.x, 0.0f, 0.0));
+            activePiece->Update();
         }
     }
 }
