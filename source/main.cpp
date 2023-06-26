@@ -274,18 +274,15 @@ void Tetris::Update()
     {
         activePiece->direction.x = -2.0f;
     }
-
-    if (input.Pressed(input.Key.RIGHT))
+    else if (input.Pressed(input.Key.RIGHT))
     {
         activePiece->direction.x = 2.0f;
     }
-
-    if (input.Pressed(input.Key.UP) && activePiece->canRotate)
+    else if (input.Pressed(input.Key.UP) && activePiece->canRotate)
     {
         activePiece->matrix.Rotate(3.14159/2, glm::vec3(0.0f, 0.0f, 1.0f));
     }
-
-    if (timer->TimeSinceStarted() > gameTickTime / speed || input.Pressed(input.Key.DOWN))
+    else if (timer->TimeSinceStarted() > gameTickTime / speed || input.Pressed(input.Key.DOWN))
     {
         timer->Reset();
         activePiece->direction.x = 0.0f;
@@ -297,7 +294,7 @@ void Tetris::Update()
 
 void Tetris::UpdateAfterPhysics()
 {
-    if (physics->Collide(NULL, "cube"))
+    if (physics->Collide())
     {
         if (activePiece->matrix.position.y == activePiece->startPos.y)
         {
@@ -306,7 +303,7 @@ void Tetris::UpdateAfterPhysics()
 
         if (activePiece->direction.y < 0.0f)
         {
-            activePiece->matrix.Translate(glm::vec3(0.0f, -activePiece->direction.y, 0.0));
+            activePiece->matrix.Translate(-activePiece->direction);
             activePiece->Update();
 
             activePiece = new Block(random.RandomRange(0, NUMBER_OF_TETROMINOS));
@@ -314,7 +311,7 @@ void Tetris::UpdateAfterPhysics()
         }
         else
         {
-            activePiece->matrix.Translate(glm::vec3(-activePiece->direction.x, 0.0f, 0.0));
+            activePiece->matrix.Translate(-activePiece->direction);
             activePiece->Update();
         }
     }
