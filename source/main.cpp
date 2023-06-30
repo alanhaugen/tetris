@@ -215,6 +215,7 @@ private:
     int score;
     int speed;
     bool paused;
+    bool isRotated;
     ITime *timer;
     Block *activePiece;
     float gameTickTime;
@@ -269,6 +270,7 @@ void Tetris::Init()
 void Tetris::Update()
 {
     activePiece->direction = glm::vec3();
+    isRotated = false;
 
     if (input.Pressed(input.Key.LEFT))
     {
@@ -281,6 +283,7 @@ void Tetris::Update()
     else if (input.Pressed(input.Key.UP) && activePiece->canRotate)
     {
         activePiece->matrix.Rotate(3.14159/2, glm::vec3(0.0f, 0.0f, 1.0f));
+        isRotated = true;
     }
     else if (timer->TimeSinceStarted() > gameTickTime / speed || input.Pressed(input.Key.DOWN))
     {
@@ -301,7 +304,12 @@ void Tetris::UpdateAfterPhysics()
             Application::NextScene();
         }
 
-        if (activePiece->direction.y < 0.0f)
+        if (isRotated)
+        {
+            activePiece->matrix.Rotate(-3.14159/2, glm::vec3(0.0f, 0.0f, 1.0f));
+            activePiece->Update();
+        }
+        else if (activePiece->direction.y < 0.0f)
         {
             activePiece->matrix.Translate(-activePiece->direction);
             activePiece->Update();
