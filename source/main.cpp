@@ -220,6 +220,8 @@ private:
     Block *activePiece;
     float gameTickTime;
 
+    void CheckScore();
+
 public:
     Tetris();
 
@@ -314,6 +316,8 @@ void Tetris::UpdateAfterPhysics()
             activePiece->matrix.Translate(-activePiece->direction);
             activePiece->Update();
 
+            CheckScore();
+
             activePiece = new Block(random.RandomRange(0, NUMBER_OF_TETROMINOS));
             components.Add(activePiece);
         }
@@ -321,6 +325,17 @@ void Tetris::UpdateAfterPhysics()
         {
             activePiece->matrix.Translate(-activePiece->direction);
             activePiece->Update();
+        }
+    }
+}
+
+void Tetris::CheckScore()
+{
+    for (unsigned int i = 0; i < components.Size(); i++)
+    {
+        if ((*components[i])->matrix.x == 0)
+        {
+            Log("weird");
         }
     }
 }
