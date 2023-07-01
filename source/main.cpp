@@ -188,7 +188,7 @@ Block::Block(int type)
     }
     else if (type == J)
     {
-        Uniform("colour", static_cast<glm::vec4>(glm::vec4(.0f, 1.0f, 1.0f, 1.0f)));
+        Uniform("colour", static_cast<glm::vec4>(glm::vec4(0.0f, 1.0f, 1.0f, 1.0f)));
 
         Add(new Cube(0,0,0));
         Add(new Cube(0,1*2,0));
@@ -197,7 +197,7 @@ Block::Block(int type)
     }
     else if (type == L)
     {
-        Uniform("colour", static_cast<glm::vec4>(glm::vec4(.0f, 1.0f, .0f, 1.0f)));
+        Uniform("colour", static_cast<glm::vec4>(glm::vec4(1.0f, 1.0f, 0.0f, 1.0f)));
 
         Add(new Cube(0,0,0));
         Add(new Cube(0,1*2,0));
@@ -340,9 +340,9 @@ void Tetris::CheckScore()
     for (unsigned int i = 0; i < components.Size(); i++)
     {
         Component *component = (*components[i]);
-        Log("Y pos: " + component->tag + String(component->matrix.matrix[3].y));
+        Log("Y pos: " + component->tag + " " + String(component->matrix.matrix[3].y));
 
-        if (component->matrix.matrix[3].y == START_Y && (component->matrix.matrix[3].x != -12.0f || component->matrix.matrix[3].x != 10.0f))
+        if (component->matrix.matrix[3].y == START_Y )//&& (component->matrix.matrix[3].x != -12.0f || component->matrix.matrix[3].x != 10.0f))
         {
             removeAtArray.Add(i);
         }
