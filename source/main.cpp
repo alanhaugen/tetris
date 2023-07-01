@@ -138,6 +138,7 @@ public:
 Block::Block(int type)
 {
     canRotate = true;
+    tag = "block";
 
     if (type == I)
     {
@@ -335,24 +336,19 @@ void Tetris::CheckScore()
     const float START_Y = -23.0f;
     const float CUBE_HEIGHT = 2.0f;
 
-    Array<int> removeAtArray;
-
     for (unsigned int i = 0; i < components.Size(); i++)
     {
         Component *component = (*components[i]);
-        Log("Y pos: " + component->tag + " " + String(component->matrix.matrix[3].y));
 
-        if (component->matrix.matrix[3].y == START_Y )//&& (component->matrix.matrix[3].x != -12.0f || component->matrix.matrix[3].x != 10.0f))
+        if (component->tag == "block")
         {
-            removeAtArray.Add(i);
-        }
-    }
+            Component *cube = component->(*components[i]);
 
-    if (removeAtArray.Size() == LINE_LENGTH)
-    {
-        for (unsigned int i = 0; i < removeAtArray.Size(); i++)
-        {
-            components.RemoveAt(removeAtArray[i]);
+            if (component->matrix.matrix[3].y == START_Y && (component->matrix.matrix[3].x != -12.0f || component->matrix.matrix[3].x != 10.0f))
+            {
+                //removeAtArray.Add(i);
+                //components.RemoveAt(i);
+            }
         }
     }
 }
