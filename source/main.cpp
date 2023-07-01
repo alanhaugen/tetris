@@ -251,7 +251,7 @@ void Tetris::Init()
     int i;
 
     // bottom (10 block)
-    for (i = 0; i <= 10; i++)
+    for (i = 0; i < 10; i++)
     {
         components.Add(new Cube(i*2  - 10,-35 + 10,-45));
     }
@@ -265,7 +265,7 @@ void Tetris::Init()
     // side right (22 blocks)
     for (i = 0; i < 22; i++)
     {
-        components.Add(new Cube(10*2-8,-35 + 10 + i*2,-45)); 
+        components.Add(new Cube(10,-35 + 10 + i*2,-45)); 
     }
 }
 
@@ -331,11 +331,28 @@ void Tetris::UpdateAfterPhysics()
 
 void Tetris::CheckScore()
 {
+    const unsigned int LINE_LENGTH = 10;
+    const float START_Y = -23.0f;
+    const float CUBE_HEIGHT = 2.0f;
+
+    Array<int> removeAtArray;
+
     for (unsigned int i = 0; i < components.Size(); i++)
     {
-        if ((*components[i])->matrix.x == 0)
+        Component *component = (*components[i]);
+        Log("Y pos: " + component->tag + String(component->matrix.matrix[3].y));
+
+        if (component->matrix.matrix[3].y == START_Y && (component->matrix.matrix[3].x != -12.0f || component->matrix.matrix[3].x != 10.0f))
         {
-            Log("weird");
+            removeAtArray.Add(i);
+        }
+    }
+
+    if (removeAtArray.Size() == LINE_LENGTH)
+    {
+        for (unsigned int i = 0; i < removeAtArray.Size(); i++)
+        {
+            components.RemoveAt(removeAtArray[i]);
         }
     }
 }
