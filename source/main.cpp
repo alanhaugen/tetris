@@ -342,7 +342,7 @@ void Tetris::CheckScore()
 
         if (component->tag == "block")
         {
-            Component *cube = component->(*components[i]);
+            //Component *cube = component->(*components[i]);
 
             if (component->matrix.matrix[3].y == START_Y && (component->matrix.matrix[3].x != -12.0f || component->matrix.matrix[3].x != 10.0f))
             {
