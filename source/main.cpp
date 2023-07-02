@@ -379,13 +379,14 @@ void Tetris::CheckScore()
             {
                 Block *block = static_cast<Block*>(component);
 
-                for (unsigned int j = block->components.Size() - 1; j > 0; j--)
+                for (unsigned int j = 0; j < block->components.Size(); j++)
                 {
                     Component *cube = *block->components[j];
 
                     if (cube->matrix.position.y == START_Y)
                     {
                         block->components.RemoveAt(j);
+                        j = -1; // Revert search back to start...
                         score++; // Update score
                     }
                 }
