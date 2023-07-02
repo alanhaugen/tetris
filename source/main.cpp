@@ -131,7 +131,6 @@ public:
     Block(int type = I);
     bool canRotate;
     glm::vec3 direction;
-    glm::vec3 startPos;
 };
 
 Block::Block(int type)
@@ -206,7 +205,6 @@ Block::Block(int type)
     }
 
     matrix.Translate(glm::vec3(0, 15, -45));
-    startPos = matrix.position;
 }
 
 class Tetris : public IScene
@@ -304,9 +302,10 @@ void Tetris::UpdateAfterPhysics()
     if (physics->Collide())
     {
         // GameOver
-        if (activePiece->matrix.position.y == activePiece->startPos.y)
+        if (activePiece->matrix.position.y - activePiece->direction.y == 15.0f)
         {
             Application::NextScene();
+            return;
         }
 
         // Rotate back
