@@ -3,6 +3,7 @@
 #include <core/components/camera.h>
 #include <core/components/text.h>
 #include <core/components/cube.h>
+#include <glm/gtc/constants.hpp>
 
 int highscore = 0;
 
@@ -282,7 +283,7 @@ void Tetris::Update()
     }
     else if (input.Pressed(input.Key.UP) && activePiece->canRotate)
     {
-        activePiece->matrix.Rotate(3.14159/2, glm::vec3(0.0f, 0.0f, 1.0f));
+        activePiece->matrix.Rotate(glm::half_pi<float>(), glm::vec3(0.0f, 0.0f, 1.0f));
         isRotated = true;
     }
     else if (timer->TimeSinceStarted() > gameTickTime / speed || input.Pressed(input.Key.DOWN))
