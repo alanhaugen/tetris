@@ -337,40 +337,17 @@ void Tetris::UpdateAfterPhysics()
 
 void Tetris::CheckScore()
 {
-    int line = 0;
     const int LINE_LENGTH = 10;
+    const int GRID_HEIGHT = 22;
     const float START_Y = -23.0f;
     const float CUBE_HEIGHT = 2.0f;
 
     // Check if cubes are making a solid line in the grid
-    for (unsigned int i = 0; i < components.Size(); i++)
+    for (unsigned int k = 0; k < GRID_HEIGHT; k++)
     {
-        Component *component = (*components[i]);
+        bool deleteRow = false;
+        int line = 0;
 
-        if (component->tag == "block")
-        {
-            Block *block = static_cast<Block*>(component);
-
-            for (unsigned int j = 0; j < block->components.Size(); j++)
-            {
-                Component *cube = *block->components[j];
-
-                if (cube->matrix.position.y == START_Y)
-                {
-                    line++;
-                    //removeAtArray.Add(i);
-                    //components.RemoveAt(i);
-                    //score++;
-                }
-            }
-        }
-    }
-
-    Log("line: " + String(line));
-
-    // Remove cubes if they are making a solid line
-    if (line == LINE_LENGTH)
-    {
         for (unsigned int i = 0; i < components.Size(); i++)
         {
             Component *component = (*components[i]);
@@ -383,11 +360,32 @@ void Tetris::CheckScore()
                 {
                     Component *cube = *block->components[j];
 
-                    if (cube->matrix.position.y == START_Y)
+                    if (cube->matrix.position.y == START_Y + (k * CUBE_HEIGHT))
                     {
-                        block->components.RemoveAt(j);
-                        j = -1; // Revert search back to start...
-                        score++; // Update score
+                        if (deleteRow)
+                        {
+                            block->components.RemoveAt(j);
+                            j = -1; // Revert search back to start...
+                            score++; // Update score
+
+                            if (score > highscore)
+                            {
+                                highscore = score;
+                            }
+                        }
+                        else
+                        {
+                            line++;
+                        }
+                    }
+
+                    if (line == LINE_LENGTH)
+                    {
+                        Log("DELETE ROW: " + String(line));
+
+                        deleteRow = true;
+                        line = 0; // To prevent an infinite loop...
+                        i = -1; // Rewind and start deleting the row
                     }
                 }
             }
