@@ -126,17 +126,25 @@ private:
         S,
         Z,
         J,
-        L
+        L,
+        RANDOM
     };
 
 public:
-    Block(int type = I);
+    Block(int type = RANDOM);
     bool canRotate;
     glm::vec3 direction;
 };
 
 Block::Block(int type)
 {
+    const int NUMBER_OF_TETROMINOS = 7;
+
+    if (type == RANDOM)
+    {
+        type = random.RandomRange(0, NUMBER_OF_TETROMINOS);
+    }
+
     canRotate = true;
     tag = "block";
 
@@ -171,7 +179,7 @@ Block::Block(int type)
     }
     else if (type == S)
     {
-        Uniform("colour", static_cast<glm::vec4>(glm::vec4(1.0f, 0.0f, 1.0f, 1.0f)));
+        Uniform("colour", static_cast<glm::vec4>(glm::vec4(1.0f, 0.5f, 0.5f, 1.0f)));
 
         Add(new Cube(0,0,0));
         Add(new Cube(1*2,0,0));
@@ -305,8 +313,6 @@ void Tetris::Update()
 
 void Tetris::UpdateAfterPhysics()
 {
-    const int NUMBER_OF_TETROMINOS = 7;
-
     if (physics->Collide())
     {
         // GameOver
@@ -330,7 +336,7 @@ void Tetris::UpdateAfterPhysics()
 
             CheckScore();
 
-            activePiece = new Block(random.RandomRange(0, NUMBER_OF_TETROMINOS));
+            activePiece = new Block();
             components.Add(activePiece);
         }
         // Move back out of collision
