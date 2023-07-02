@@ -342,6 +342,8 @@ void Tetris::CheckScore()
     const float START_Y = -23.0f;
     const float CUBE_HEIGHT = 2.0f;
 
+    int multiplier = 1;
+
     // Check if cubes are making a solid line in the grid
     for (unsigned int k = 0; k < GRID_HEIGHT; k++)
     {
@@ -366,7 +368,7 @@ void Tetris::CheckScore()
                         {
                             block->components.RemoveAt(j);
                             j = -1; // Revert search back to start...
-                            score++; // Update score
+                            score = score + (1 * multiplier); // Update score
 
                             if (score > highscore)
                             {
@@ -389,6 +391,11 @@ void Tetris::CheckScore()
                     }
                 }
             }
+        }
+
+        if (deleteRow == true)
+        {
+            multiplier++;
         }
     }
 }
