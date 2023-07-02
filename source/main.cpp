@@ -4,6 +4,7 @@
 #include <core/components/text.h>
 #include <core/components/cube.h>
 #include <glm/gtc/constants.hpp>
+#include <sys/time.h>
 
 int highscore = 0;
 
@@ -235,6 +236,12 @@ Tetris::Tetris()
 
 void Tetris::Init()
 {
+    struct timeval tp;
+    gettimeofday(&tp, NULL);
+    long int ms = tp.tv_sec * 1000 + tp.tv_usec / 1000;
+
+    random = Random(ms);
+
     score = 0;
     speed = 1;
     paused = false;
