@@ -5,7 +5,6 @@
 #include <core/components/cube.h>
 
 int highscore = 0;
-const int NUMBER_OF_TETROMINOS = 7;
 
 class MainMenu : public IScene
 {
@@ -248,7 +247,7 @@ void Tetris::Init()
     components.Add(new Camera());
     components.Add(activePiece);
 
-    //// Grid around board
+    // Grid around board v
     int i;
 
     // bottom (10 block)
@@ -260,13 +259,13 @@ void Tetris::Init()
     // side left (22 blocks)
     for (i = 0; i < 22; i++)
     {
-        components.Add(new Cube( -12,-35 + 10 + i*2,-45)); 
+        components.Add(new Cube( -12,-35 + 10 + i*2,-45));
     }
 
     // side right (22 blocks)
     for (i = 0; i < 22; i++)
     {
-        components.Add(new Cube(10,-35 + 10 + i*2,-45)); 
+        components.Add(new Cube(10,-35 + 10 + i*2,-45));
     }
 }
 
@@ -300,18 +299,23 @@ void Tetris::Update()
 
 void Tetris::UpdateAfterPhysics()
 {
+    const int NUMBER_OF_TETROMINOS = 7;
+
     if (physics->Collide())
     {
+        // GameOver
         if (activePiece->matrix.position.y == activePiece->startPos.y)
         {
             Application::NextScene();
         }
 
+        // Rotate back
         if (isRotated)
         {
             activePiece->matrix.Rotate(-3.14159/2, glm::vec3(0.0f, 0.0f, 1.0f));
             activePiece->Update();
         }
+        // Make new brick
         else if (activePiece->direction.y < 0.0f)
         {
             activePiece->matrix.Translate(-activePiece->direction);
@@ -322,6 +326,7 @@ void Tetris::UpdateAfterPhysics()
             activePiece = new Block(random.RandomRange(0, NUMBER_OF_TETROMINOS));
             components.Add(activePiece);
         }
+        // Move back out of collision
         else
         {
             activePiece->matrix.Translate(-activePiece->direction);
@@ -332,22 +337,58 @@ void Tetris::UpdateAfterPhysics()
 
 void Tetris::CheckScore()
 {
-    const unsigned int LINE_LENGTH = 10;
+    int line = 0;
+    const int LINE_LENGTH = 10;
     const float START_Y = -23.0f;
     const float CUBE_HEIGHT = 2.0f;
 
+    // Check if cubes are making a solid line in the grid
     for (unsigned int i = 0; i < components.Size(); i++)
     {
         Component *component = (*components[i]);
 
         if (component->tag == "block")
         {
-            //Component *cube = component->(*components[i]);
+            Block *block = static_cast<Block*>(component);
 
-            if (component->matrix.matrix[3].y == START_Y && (component->matrix.matrix[3].x != -12.0f || component->matrix.matrix[3].x != 10.0f))
+            for (unsigned int j = 0; j < block->components.Size(); j++)
             {
-                //removeAtArray.Add(i);
-                //components.RemoveAt(i);
+                Component *cube = *block->components[j];
+
+                if (cube->matrix.position.y == START_Y)
+                {
+                    line++;
+                    //removeAtArray.Add(i);
+                    //components.RemoveAt(i);
+                    //score++;
+                }
+            }
+        }
+    }
+
+    Log("line: " + String(line));
+
+    // Remove cubes if they are making a solid line
+    if (line == LINE_LENGTH)
+    {
+        for (unsigned int i = 0; i < components.Size(); i++)
+        {
+            Component *component = (*components[i]);
+
+            if (component->tag == "block")
+            {
+                Block *block = static_cast<Block*>(component);
+
+                for (unsigned int j = block->components.Size() - 1; j > 0; j--)
+                {
+                    Component *cube = *block->components[j];
+
+                    if (cube->matrix.position.y == START_Y)
+                    {
+                        block->components.RemoveAt(j);
+                        score++; // Update score
+                    }
+                }
             }
         }
     }
