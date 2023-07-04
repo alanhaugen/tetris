@@ -248,7 +248,7 @@ void Tetris::Init()
     gettimeofday(&tp, NULL);
     long int ms = tp.tv_sec * 1000 + tp.tv_usec / 1000;
 
-    random = Random(ms);
+    random = Random(ms); // Seed random number generator with current time
 
     score = 0;
     speed = 1;
@@ -261,7 +261,7 @@ void Tetris::Init()
     components.Add(new Camera());
     components.Add(activePiece);
 
-    // Grid around board v
+    // Grid around board code follows
     int i;
 
     // bottom (10 block)
@@ -396,7 +396,7 @@ void Tetris::CheckScore()
 
                     if (line == LINE_LENGTH)
                     {
-                        Log("DELETE ROW: " + String(line));
+                        Log("DELETE ROW: " + String(line * multiplier));
 
                         deleteRow = true;
                         line = 0; // To prevent an infinite loop...
