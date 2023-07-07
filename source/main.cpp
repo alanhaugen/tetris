@@ -301,6 +301,10 @@ void Tetris::Update()
         activePiece->matrix.Rotate(glm::half_pi<float>(), glm::vec3(0.0f, 0.0f, 1.0f));
         isRotated = true;
     }
+    if (input.Pressed(input.Key.SPACE))
+    {
+        // Go to bottom 
+    }
     else if (timer->TimeSinceStarted() > gameTickTime / speed || input.Pressed(input.Key.DOWN))
     {
         timer->Reset();
