@@ -56,12 +56,12 @@ void MainMenu::Update()
     if (input.Pressed(input.Key.DOWN))
     {
         isStartSelected = false;
-        selector->y = quit->y;
+        *selector->matrix.y = *quit->matrix.y;
     }
     if (input.Pressed(input.Key.UP))
     {
         isStartSelected = true;
-        selector->y = startGame->y;
+        *selector->matrix.y = *startGame->matrix.y;
     }
     if (input.Pressed(input.Key.ENTER))
     {
