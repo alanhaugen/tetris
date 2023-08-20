@@ -150,7 +150,7 @@ Block::Block(int type)
 
     if (type == I)
     {
-        Uniform("colour", static_cast<glm::vec4>(glm::vec4(1.0f, 0.0f, 1.0f, 1.0f)));
+        Uniform("colour", glm::vec4(1.0f, 0.0f, 1.0f, 1.0f));
 
         Add(new Cube(0,0,0));
         Add(new Cube(0,1*2,0));
@@ -159,7 +159,7 @@ Block::Block(int type)
     }
     else if (type == O)
     {
-        Uniform("colour", static_cast<glm::vec4>(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f)));
+        Uniform("colour", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 
         Add(new Cube(0,0,0));
         Add(new Cube(0,1*2,0));
@@ -170,7 +170,7 @@ Block::Block(int type)
     }
     else if (type == T)
     {
-        Uniform("colour", static_cast<glm::vec4>(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f)));
+        Uniform("colour", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 
         Add(new Cube(0,0,0));
         Add(new Cube(1*2,0,0));
@@ -179,7 +179,7 @@ Block::Block(int type)
     }
     else if (type == S)
     {
-        Uniform("colour", static_cast<glm::vec4>(glm::vec4(1.0f, 0.5f, 0.5f, 1.0f)));
+        Uniform("colour", glm::vec4(1.0f, 0.5f, 0.5f, 1.0f));
 
         Add(new Cube(0,0,0));
         Add(new Cube(1*2,0,0));
@@ -188,7 +188,7 @@ Block::Block(int type)
     }
     else if (type == Z)
     {
-        Uniform("colour", static_cast<glm::vec4>(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+        Uniform("colour", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
         Add(new Cube(0,0,0));
         Add(new Cube(-1*2,0,0));
@@ -197,7 +197,7 @@ Block::Block(int type)
     }
     else if (type == J)
     {
-        Uniform("colour", static_cast<glm::vec4>(glm::vec4(0.0f, 1.0f, 1.0f, 1.0f)));
+        Uniform("colour", glm::vec4(0.0f, 1.0f, 1.0f, 1.0f));
 
         Add(new Cube(0,0,0));
         Add(new Cube(0,1*2,0));
@@ -206,7 +206,7 @@ Block::Block(int type)
     }
     else if (type == L)
     {
-        Uniform("colour", static_cast<glm::vec4>(glm::vec4(1.0f, 1.0f, 0.0f, 1.0f)));
+        Uniform("colour", glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
 
         Add(new Cube(0,0,0));
         Add(new Cube(0,1*2,0));
